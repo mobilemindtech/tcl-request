@@ -52,14 +52,17 @@ namespace eval requests {
                 my prop encoding
             }
 
+            # 200
             method status {} {
                 my prop ncode
             }
 
+            # ok,eof,error,timeout,reset
             method status-text {} {
                 my prop status
             }
 
+            # HTTP/1.1 200
             method status-code {} {
                 my prop code
             }
@@ -288,8 +291,18 @@ namespace eval requests {
         ::http::formatQuery {*}$data
     }
 
-    proc new-request {args}{
+    # @param keyvaluelist
+    proc new-request {args} {
 	   Request new {*}$args
+    }
+
+    # @param keyvaluelist
+    proc configure {args} {
+        ::http::config {*}$args
+    }
+
+    proc quote-string {value} {
+        ::http::quoteString $value
     }
 
     namespace export url-encode new-request get post put patch delete options request

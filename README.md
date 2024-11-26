@@ -35,8 +35,6 @@ Use `--` to pass values to `http::geturl`
 
 Doc
 
-* `::requests::url-encode {keyvallist}` 
-* `::requests::new-request` Create new `::requests::Request`
 * `::requests::get {url {headers keyvallist} args}` 
 * `::requests::options {url {headers keyvallist} args}`
 * `::requests::post {url payload {headers keyvallist} args}`
@@ -44,6 +42,10 @@ Doc
 * `::requests::patch {url payload {headers keyvallist} args}`
 * `::requests::delete {url payload {headers keyvallist} args}`
 * `::requests::request {args}`
+* `::requests::new-request` Create new `::requests::Request`
+* `::requests::url-encode {keyvallist}`  wrapper for `::http::formatQuery`
+* `::requests::quote-string {string}`  wrapper for `::http::quoteString`
+* `::requests::configure {args}` wrapper for `::http::config`
 
 Request args
 
@@ -81,7 +83,7 @@ The `::requests::Request new` accept all args of session `Request args`. You can
 * `prop {string}` get prop by name
 * `encoding` get encoding
 * `status` get http status (eg. 200, 404)
-* `status-text`
+* `status-text` ok,eof,error,timeout,reset
 * `status-code` get http status (eg. HTTP/1.1 200)
 * `text` get bodys tring
 * `body` get bodys tring
