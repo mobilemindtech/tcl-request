@@ -137,17 +137,10 @@ namespace eval requests {
                 } else {
                     ${::requests::log}::error "use prop <name> or prop <name> <value>"
                 }
-	    }
+	        }
 
-	    method query {query} {
-		my prop -query $query
-	    }
 
             method url {url} {
-                my prop -url $url
-            }
-
-	    method uri {url} {
                 my prop -url $url
             }
 
@@ -179,53 +172,52 @@ namespace eval requests {
         }    
     }
 
-    proc get {uri {headers {}} {args ""}} {
-        request -uri $uri -method GET -headers $headers {*}$args
+    proc get {url {headers {}} {args ""}} {
+        request -url $url -method GET -headers $headers {*}$args
     }
 
-    proc options {uri {headers {}} {args ""}} {
-        request -uri $uri -method OPTIONS -headers $headers {*}$args
+    proc options {url {headers {}} {args ""}} {
+        request -url $url -method OPTIONS -headers $headers {*}$args
     }
 
-    proc head {uri {headers {}} {args ""}} {
-        request -uri $uri -method HEAD -headers $headers {*}$args
+    proc head {url {headers {}} {args ""}} {
+        request -url $url -method HEAD -headers $headers {*}$args
     }
 
-    proc post {uri payload {{headers}} {args ""}} {
-        request -uri $uri -method POST -data $payload -headers $headers {*}$args
+    proc post {url payload {{headers}} {args ""}} {
+        request -url $url -method POST -data $payload -headers $headers {*}$args
     }
 
-    proc put {uri payload {{headers}} {args ""}} {
-        request -uri $uri -method PUT -data $payload -headers $headers {*}$args
+    proc put {url payload {{headers}} {args ""}} {
+        request -url $url -method PUT -data $payload -headers $headers {*}$args
     }
 
-    proc patch {uri payload {{headers}} {args ""}} {
-        request -uri $uri -method PATCH -data $payload -headers $headers {*}$args
+    proc patch {url payload {{headers}} {args ""}} {
+        request -url $url -method PATCH -data $payload -headers $headers {*}$args
     }
 
-    proc delete {uri payload {{headers}} {args ""}} {
-        request -uri $uri -method DELETE -data $payload -headers $headers {*}$args
+    proc delete {url payload {{headers}} {args ""}} {
+        request -url $url -method DELETE -data $payload -headers $headers {*}$args
     }
 
     # Execute a http request
     # @param args keyvaluelist
     proc request {args} {
         variable log
-        set queries {}
         set headers {}
         set params {}
-        set uri {}
+        set url {}
         set data {}
         set debug false
         set req {}
 
-	set reqIdx [lsearch $args -req]
+	    set reqIdx [lsearch $args -req]
         if {$reqIdx > -1} {
-	    incr reqIdx
-	    set req [lindex $args $reqIdx]
-	    foreach {k v} [$req props] {
-		dict set params $k $v
-	    }
+	       incr reqIdx
+	       set req [lindex $args $reqIdx]
+	       foreach {k v} [$req props] {
+		      dict set params $k $v
+	       }
         }
 
         foreach {k v} $args {
@@ -236,17 +228,8 @@ namespace eval requests {
                 -debug {
                     set debug $v
                 }
-                -uri|-url {
-                    set uri $v
-                }
-                -protocol {
-                    dict set params -protocol $v
-                }
-                -progress {
-                    dict set params -progress $v
-                }
-                -progress-post {
-                    dict set params -queryprogress $v
+                |-url {
+                    set url $v
                 }
                 -method {
                     dict set params -method $v
@@ -261,16 +244,8 @@ namespace eval requests {
                 -timeout {
                     dict set params -timeout $v
                 }
-                -contentType|-content-type {
+                -content-type {
                     dict set params -type $v
-                }
-                -query {
-                    dict set queries [lindex $v 0] [lindex $v 1]
-                }
-                -queries {
-                    foreach it $v {
-                        dict set queries [lindex $it 0] [lindex $it 1]
-                    }
                 }
                 -headers {
                     foreach it $v {
@@ -291,17 +266,16 @@ namespace eval requests {
             }
         }
 
-        dict set params -query [::http::formatQuery {*}$queries]
         dict set params -headers $headers
 
         if {$debug} {
-            ${log}::debug "[dict get $params -method] $uri"
+            ${log}::debug "[dict get $params -method] $url"
             foreach {k v} $params {                
                 ${log}::debug "param: $k=$v"
             }
         }
 
-        set token [http::geturl $uri {*}$params ]
+        set token [http::geturl $url {*}$params ]
         set resp [Response new $token]
         ::http::cleanup $token
         return $resp
@@ -315,7 +289,7 @@ namespace eval requests {
     }
 
     proc new-request {args}{
-	Request new {*}$args
+	   Request new {*}$args
     }
 
     namespace export url-encode new-request get post put patch delete options request
