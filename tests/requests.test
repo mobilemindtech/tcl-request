@@ -1,0 +1,31 @@
+package require tcltest
+
+namespace import ::tcltest::*
+
+source ../requests.tcl
+
+namespace import ::requests::*
+
+proc assert {cond {msg "** Assestion error"}} {
+    set cond [uplevel 1 [list expr $cond]]
+    if {!$cond} {
+        return -code error $msg
+    }
+}
+
+test test-get {} -body {            
+    
+    set resp [get \
+                http://echo.jsontest.com/key/value/one/two \
+                {{Content-Type application/json}} \
+                -debug true]
+
+    assert {[$resp json] == {one two key value}}
+    assert {[$resp content-type] == "application/json"}
+
+    $resp status
+
+} -result 200
+
+
+cleanupTests
