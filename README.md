@@ -1,5 +1,4 @@
-# tcl-request
-TCL Requests
+# TCL Requests
 
 Simple wrapper for tcl `http::geturl`
 
