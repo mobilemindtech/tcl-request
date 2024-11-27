@@ -8,7 +8,11 @@ package require json
 
 ::http::register https 443 [list ::tls::socket -autoservername true]
 
-namespace eval requests {
+
+namespace eval ::requests {
+
+    namespace export requests new-request url-encode quote-string config Request Response
+
 
     set log [logger::init requests]
 
@@ -206,7 +210,7 @@ namespace eval requests {
     }
 
     # @param cmd <get|head|options|post|put|delete|patch>
-    proc http {cmd args} {
+    proc requests {cmd args} {
 
         switch $cmd {
             get { get {*}$args }
@@ -216,6 +220,7 @@ namespace eval requests {
             put { put {*}$args }
             delete { delete {*}$args }
             patch { patch {*}$args }
+            do { request {*}$args }
             default {
                 return -code error "command $cmd not found, use <get|head|options|post|put|delete|patch>"
             }
@@ -316,14 +321,29 @@ namespace eval requests {
     }
 
     # @param keyvaluelist
-    proc configure {args} {
+    proc config {args} {
         ::http::config {*}$args
     }
 
     proc quote-string {value} {
         ::http::quoteString $value
-    }
-
-    namespace export url-encode new-request get post put patch delete options request http Request Response
+    }    
 }
 
+namespace eval ::requests::all {
+    namespace import ::requests::requests
+    namespace import ::requests::quote-string
+    namespace import ::requests::config
+    namespace import ::requests::url-encode
+    namespace import ::requests::new-request
+    namespace import ::requests::get
+    namespace import ::requests::post
+    namespace import ::requests::put
+    namespace import ::requests::patch
+    namespace import ::requests::delete
+    namespace import ::requests::options
+    namespace import ::requests::request
+    namespace import ::requests::requests
+    namespace import ::requests::Request
+    namespace import ::requests::Response
+}

@@ -11,7 +11,12 @@ https://www.tcl.tk/man/tcl8.6.13/TclCmd/http.htm
 
 package require requests
 
-namespace import ::requests::*
+
+# import all commands, ex. get,post,etc..
+namespace import ::requests::all::* 
+
+# or import only requests new-request url-encode quote-string config Request Response
+namespace import ::requests::* 
 
 set resp [get http://myapp.com/json]
 
@@ -29,7 +34,7 @@ set resp [get -req $req]
 get http://app.com -- -header {x y} 
 
 # use http with cmd
-http get http://app.com -- -header {x y} 
+requests get http://app.com -- -header {x y} 
 
 
 #use request
@@ -41,7 +46,7 @@ http get http://app.com -- -header {x y}
 Use `--` to pass values to `http::geturl`
 
 
-Doc
+### Doc
 
 * `::requests::get {url {headers keyvallist} args}` 
 * `::requests::options {url {headers keyvallist} args}`
@@ -49,14 +54,23 @@ Doc
 * `::requests::put {url payload {headers keyvallist} args}`
 * `::requests::patch {url payload {headers keyvallist} args}`
 * `::requests::delete {url payload {headers keyvallist} args}`
-* `::requests::http {cmd args}` convenient cmd
 * `::requests::request {args}`
 * `::requests::new-request` Create new `::requests::Request`
 * `::requests::url-encode {keyvallist}`  wrapper for `::http::formatQuery`
 * `::requests::quote-string {string}`  wrapper for `::http::quoteString`
-* `::requests::configure {args}` wrapper for `::http::config`
+* `::requests::config {args}` wrapper for `::http::config`
 
-Request args
+Requests cmd
+
+* `::requests::requests do {args}` same of `request`
+* `::requests::requests get {url {headers keyvallist} args}` 
+* `::requests::requests options {url {headers keyvallist} args}`
+* `::requests::requests post {url payload {headers keyvallist} args}`
+* `::requests::requests put {url payload {headers keyvallist} args}`
+* `::requests::requests patch {url payload {headers keyvallist} args}`
+* `::requests::requests delete {url payload {headers keyvallist} args}`
+
+Gereral args
 
 * `-debug` default false
 * `-url` url
@@ -69,8 +83,8 @@ Request args
 * `-header` keyval `{k v}`
 * `-headers` keyvallist `{{k v} {x y}}`
 * `-req` accepts a `::requests::Request`
+* `--` send args directly to `::http::geturl`
 
-Others args can be pass using `--`
 
 ### ::requests::Request
 
