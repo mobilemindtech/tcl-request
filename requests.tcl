@@ -307,3 +307,7 @@ namespace eval requests {
 
     namespace export url-encode new-request get post put patch delete options request
 }
+
+package provide requests 1.0
+package require Tcl 8.6
+package require http
