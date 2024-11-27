@@ -15,12 +15,26 @@ proc assert {cond {msg "** Assestion error"}} {
 
 test test-get {} -body {            
     
-    set resp [get \
+    set resp [http get \
                 http://echo.jsontest.com/key/value/one/two \
                 {{Content-Type application/json}} \
                 -debug true]
 
     assert {[$resp json] == {one two key value}}
+    assert {[$resp content-type] == "application/json"}
+
+    $resp status
+
+} -result 200
+
+test test-get-req {} -body {            
+    
+
+    set req [Request new -url http://echo.jsontest.com/x/1/y/2 -method get]
+
+    set resp [request -req $req -debug true]
+
+    assert {[$resp json] == {x 1 y 2}}
     assert {[$resp content-type] == "application/json"}
 
     $resp status

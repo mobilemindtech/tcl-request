@@ -1,10 +1,12 @@
+package provide requests 1.0
+
 package require http
 package require tls
 package require TclOO
 package require logger
 package require json
 
-http::register https 443 [list ::tls::socket -autoservername true]
+::http::register https 443 [list ::tls::socket -autoservername true]
 
 namespace eval requests {
 
@@ -203,6 +205,23 @@ namespace eval requests {
         request -url $url -method DELETE -data $payload -headers $headers {*}$args
     }
 
+    # @param cmd <get|head|options|post|put|delete|patch>
+    proc http {cmd args} {
+
+        switch $cmd {
+            get { get {*}$args }
+            head { head {*}$args }
+            options { options {*}$args }
+            post { post {*}$args }
+            put { put {*}$args }
+            delete { delete {*}$args }
+            patch { patch {*}$args }
+            default {
+                return -code error "command $cmd not found, use <get|head|options|post|put|delete|patch>"
+            }
+        }
+    }
+
     # Execute a http request
     # @param args keyvaluelist
     proc request {args} {
@@ -219,19 +238,19 @@ namespace eval requests {
 	       incr reqIdx
 	       set req [lindex $args $reqIdx]
 	       foreach {k v} [$req props] {
-		      dict set params $k $v
+		      dict set args $k $v
 	       }
         }
 
         foreach {k v} $args {
-            switch -regexp -- $k {
+            switch $k {
                 -req {
                     # bypass
                 }
                 -debug {
                     set debug $v
                 }
-                |-url {
+                -url {
                     set url $v
                 }
                 -method {
@@ -278,7 +297,7 @@ namespace eval requests {
             }
         }
 
-        set token [http::geturl $url {*}$params ]
+        set token [::http::geturl $url {*}$params ]
         set resp [Response new $token]
         ::http::cleanup $token
         return $resp
@@ -305,9 +324,6 @@ namespace eval requests {
         ::http::quoteString $value
     }
 
-    namespace export url-encode new-request get post put patch delete options request
+    namespace export url-encode new-request get post put patch delete options request http Request Response
 }
 
-package provide requests 1.0
-package require Tcl 8.6
-package require http

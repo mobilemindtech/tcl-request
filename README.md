@@ -22,11 +22,19 @@ set resp [post http://myapp.com/json -json {{"x": 1, "y": 2}}]
 
 puts [$resp status]
 
-set req [new-request]
-$req uri http://myapp.com
+set req [Request new] ;# or [Request new]
+$req url http://myapp.com
 set resp [get -req $req]
 
 get http://app.com -- -header {x y} 
+
+# use http with cmd
+http get http://app.com -- -header {x y} 
+
+
+#use request
+
+
 
 ```
 
@@ -41,6 +49,7 @@ Doc
 * `::requests::put {url payload {headers keyvallist} args}`
 * `::requests::patch {url payload {headers keyvallist} args}`
 * `::requests::delete {url payload {headers keyvallist} args}`
+* `::requests::http {cmd args}` convenient cmd
 * `::requests::request {args}`
 * `::requests::new-request` Create new `::requests::Request`
 * `::requests::url-encode {keyvallist}`  wrapper for `::http::formatQuery`
