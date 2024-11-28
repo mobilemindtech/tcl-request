@@ -1,22 +1,28 @@
-# TCL Requests
+# TCL Request
 
 Simple wrapper for tcl `http::geturl`
 
 
 https://www.tcl.tk/man/tcl8.6.13/TclCmd/http.htm
 
+### Install with `tclp`
+
+Ref https://github.com/mobilemindtech/tclp
+
+```
+tclp pgk install https://github.com/mobilemindtech/tcl-request request
+```
+
+
 ## Usage
 
 ```tcl
 
-package require requests
+package require request
 
 
 # import all commands, ex. get,post,etc..
-namespace import ::requests::all::* 
-
-# or import only requests new-request url-encode quote-string config Request Response
-namespace import ::requests::* 
+namespace import ::request::all::* 
 
 set resp [get http://myapp.com/json]
 
@@ -27,19 +33,21 @@ set resp [post http://myapp.com/json -json {{"x": 1, "y": 2}}]
 
 puts [$resp status]
 
-set req [Request new] ;# or [Request new]
-$req url http://myapp.com
-set resp [get -req $req]
-
 get http://app.com -- -header {x y} 
 
+```
+
+```tcl
+# or import only request new-request url-encode quote-string config Request Response
+namespace import ::request::* 
+
+
+set req [Request new] ;# or [Request new]
+$req url http://myapp.com
+set resp [request do -req $req]
+
 # use http with cmd
-requests get http://app.com -- -header {x y} 
-
-
-#use request
-
-
+request get http://app.com -- -header {x y} 
 
 ```
 
@@ -48,27 +56,28 @@ Use `--` to pass values to `http::geturl`
 
 ### Doc
 
-* `::requests::get {url {headers keyvallist} args}` 
-* `::requests::options {url {headers keyvallist} args}`
-* `::requests::post {url payload {headers keyvallist} args}`
-* `::requests::put {url payload {headers keyvallist} args}`
-* `::requests::patch {url payload {headers keyvallist} args}`
-* `::requests::delete {url payload {headers keyvallist} args}`
-* `::requests::request {args}`
-* `::requests::new-request` Create new `::requests::Request`
-* `::requests::url-encode {keyvallist}`  wrapper for `::http::formatQuery`
-* `::requests::quote-string {string}`  wrapper for `::http::quoteString`
-* `::requests::config {args}` wrapper for `::http::config`
+* `::request::get {url {headers keyvallist} args}` 
+* `::request::options {url {headers keyvallist} args}`
+* `::request::post {url payload {headers keyvallist} args}`
+* `::request::put {url payload {headers keyvallist} args}`
+* `::request::patch {url payload {headers keyvallist} args}`
+* `::request::delete {url payload {headers keyvallist} args}`
+* `::request::do-request {args}`
+* `::request::new-request` Create new `::request::Request`
+* `::request::url-encode {keyvallist}`  wrapper for `::http::formatQuery`
+* `::request::quote-string {string}`  wrapper for `::http::quoteString`
+* `::request::config {args}` wrapper for `::http::config`
+* `::request::request {cmd args}`
 
 Requests cmd
 
-* `::requests::requests do {args}` same of `request`
-* `::requests::requests get {url {headers keyvallist} args}` 
-* `::requests::requests options {url {headers keyvallist} args}`
-* `::requests::requests post {url payload {headers keyvallist} args}`
-* `::requests::requests put {url payload {headers keyvallist} args}`
-* `::requests::requests patch {url payload {headers keyvallist} args}`
-* `::requests::requests delete {url payload {headers keyvallist} args}`
+* `::request::request do {args}` same of `request`
+* `::request::request get {url {headers keyvallist} args}` 
+* `::request::request options {url {headers keyvallist} args}`
+* `::request::request post {url payload {headers keyvallist} args}`
+* `::request::request put {url payload {headers keyvallist} args}`
+* `::request::request patch {url payload {headers keyvallist} args}`
+* `::request::request delete {url payload {headers keyvallist} args}`
 
 Gereral args
 
@@ -82,11 +91,11 @@ Gereral args
 * `-content-type` set content-type
 * `-header` keyval `{k v}`
 * `-headers` keyvallist `{{k v} {x y}}`
-* `-req` accepts a `::requests::Request`
+* `-req` accepts a `::request::Request`
 * `--` send args directly to `::http::geturl`
 
 
-### ::requests::Request
+### ::request::Request
 
 Methods:
 
@@ -99,9 +108,9 @@ Methods:
 * `headers {keyvallist}` set headers
 * `content-type {string}` set content-type
 
-The `::requests::Request new` accept all args of session `Request args`. You can use `::requests::new-request` too.
+The `::request::Request new` accept all args of session `Request args`. You can use `::request::new-request` too.
 
-### ::requests::Response
+### ::request::Response
 
 * `prop {string}` get prop by name
 * `encoding` get encoding

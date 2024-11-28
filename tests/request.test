@@ -2,9 +2,9 @@ package require tcltest
 
 namespace import ::tcltest::*
 
-source ../requests.tcl
+source ../request.tcl
 
-namespace import ::requests::*
+namespace import ::request::*
 
 proc assert {cond {msg "** Assestion error"}} {
     set cond [uplevel 1 [list expr $cond]]
@@ -15,7 +15,7 @@ proc assert {cond {msg "** Assestion error"}} {
 
 test test-get {} -body {            
     
-    set resp [requests get \
+    set resp [request get \
                 http://echo.jsontest.com/key/value/one/two \
                 {{Content-Type application/json}} \
                 -debug true]
@@ -32,7 +32,7 @@ test test-get-req {} -body {
 
     set req [Request new -url http://echo.jsontest.com/x/1/y/2 -method get]
 
-    set resp [requests do -req $req -debug true]
+    set resp [request do -req $req -debug true]
 
     assert {[$resp json] == {x 1 y 2}}
     assert {[$resp content-type] == "application/json"}

@@ -1,4 +1,4 @@
-package provide requests 1.0
+package provide request 1.0
 
 package require http
 package require tls
@@ -9,12 +9,12 @@ package require json
 ::http::register https 443 [list ::tls::socket -autoservername true]
 
 
-namespace eval ::requests {
+namespace eval ::request {
 
-    namespace export requests new-request url-encode quote-string config Request Response
+    namespace export request new-request url-encode quote-string config Request Response
 
 
-    set log [logger::init requests]
+    set log [logger::init request]
 
     catch {
         oo::class create Response {
@@ -49,7 +49,7 @@ namespace eval ::requests {
                 if {[dict exists $props $name]} {
                     dict get $props $name
                 } else {
-                    ${::requests::log}::error "propery $name not found"
+                    ${::request::log}::error "propery $name not found"
                     return {}
                 }
             }
@@ -106,7 +106,7 @@ namespace eval ::requests {
                 if {[dict exists $hrs $name]} {
                     dict get $hrs $name
                 } else {
-                    ${::requests::log}::error "header $name not found"
+                    ${::request::log}::error "header $name not found"
                     return {}                    
                 }
             }
@@ -135,7 +135,7 @@ namespace eval ::requests {
                     if {[dict exists $props $name]} {
                         dict get $props $name]
                     } else {
-                        ${::requests::log}::error "prop $name not found"
+                        ${::request::log}::error "prop $name not found"
                         return {}
                     }
                 } elseif {[llength $args] == 2} {
@@ -144,7 +144,7 @@ namespace eval ::requests {
                     dict set props $name $val
                     return $val
                 } else {
-                    ${::requests::log}::error "use prop <name> or prop <name> <value>"
+                    ${::request::log}::error "use prop <name> or prop <name> <value>"
                 }
 	        }
 
@@ -182,35 +182,35 @@ namespace eval ::requests {
     }
 
     proc get {url {headers {}} {args ""}} {
-        request -url $url -method GET -headers $headers {*}$args
+        do-request -url $url -method GET -headers $headers {*}$args
     }
 
     proc options {url {headers {}} {args ""}} {
-        request -url $url -method OPTIONS -headers $headers {*}$args
+        do-request -url $url -method OPTIONS -headers $headers {*}$args
     }
 
     proc head {url {headers {}} {args ""}} {
-        request -url $url -method HEAD -headers $headers {*}$args
+        do-request -url $url -method HEAD -headers $headers {*}$args
     }
 
     proc post {url payload {{headers}} {args ""}} {
-        request -url $url -method POST -data $payload -headers $headers {*}$args
+        do-request -url $url -method POST -data $payload -headers $headers {*}$args
     }
 
     proc put {url payload {{headers}} {args ""}} {
-        request -url $url -method PUT -data $payload -headers $headers {*}$args
+        do-request -url $url -method PUT -data $payload -headers $headers {*}$args
     }
 
     proc patch {url payload {{headers}} {args ""}} {
-        request -url $url -method PATCH -data $payload -headers $headers {*}$args
+        do-request -url $url -method PATCH -data $payload -headers $headers {*}$args
     }
 
     proc delete {url payload {{headers}} {args ""}} {
-        request -url $url -method DELETE -data $payload -headers $headers {*}$args
+        do-request -url $url -method DELETE -data $payload -headers $headers {*}$args
     }
 
     # @param cmd <get|head|options|post|put|delete|patch>
-    proc requests {cmd args} {
+    proc request {cmd args} {
 
         switch $cmd {
             get { get {*}$args }
@@ -220,7 +220,7 @@ namespace eval ::requests {
             put { put {*}$args }
             delete { delete {*}$args }
             patch { patch {*}$args }
-            do { request {*}$args }
+            do { do-request {*}$args }
             default {
                 return -code error "command $cmd not found, use <get|head|options|post|put|delete|patch>"
             }
@@ -229,7 +229,7 @@ namespace eval ::requests {
 
     # Execute a http request
     # @param args keyvaluelist
-    proc request {args} {
+    proc do-request {args} {
         variable log
         set headers {}
         set params {}
@@ -330,20 +330,19 @@ namespace eval ::requests {
     }    
 }
 
-namespace eval ::requests::all {
-    namespace import ::requests::requests
-    namespace import ::requests::quote-string
-    namespace import ::requests::config
-    namespace import ::requests::url-encode
-    namespace import ::requests::new-request
-    namespace import ::requests::get
-    namespace import ::requests::post
-    namespace import ::requests::put
-    namespace import ::requests::patch
-    namespace import ::requests::delete
-    namespace import ::requests::options
-    namespace import ::requests::request
-    namespace import ::requests::requests
-    namespace import ::requests::Request
-    namespace import ::requests::Response
+namespace eval ::request::all {
+    namespace import ::request::quote-string
+    namespace import ::request::config
+    namespace import ::request::url-encode
+    namespace import ::request::new-request
+    namespace import ::request::get
+    namespace import ::request::post
+    namespace import ::request::put
+    namespace import ::request::patch
+    namespace import ::request::delete
+    namespace import ::request::options
+    namespace import ::request::do-request
+    namespace import ::request::request
+    namespace import ::request::Request
+    namespace import ::request::Response
 }
