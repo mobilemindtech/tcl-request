@@ -21,9 +21,7 @@ Import all:
 `quote-string config url-encode new-request get post put patch delete options do-request request Request Response`
 
 ```tcl
-
 package require request
-
 namespace import ::request::all::* 
 
 set resp [get http://myapp.com/json]
@@ -31,20 +29,20 @@ set resp [get http://myapp.com/json]
 # convert to tcl dict
 puts [$resp json]
 
+# warn! use third json lib to converter tcl to json
 set resp [post http://myapp.com/json -json {{"x": 1, "y": 2}}]
 
 puts [$resp status]
 
 get http://app.com -- -header {x y} 
-
 ```
 
 Import only:
 `request new-request url-encode quote-string config Request Response`
 
 ```tcl
+package require request
 namespace import ::request::* 
-
 
 set req [Request new] ;# or [Request new]
 $req url http://myapp.com
