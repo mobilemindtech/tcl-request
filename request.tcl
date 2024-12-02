@@ -238,7 +238,7 @@ namespace eval ::request {
         set debug false
         set req {}
 
-	    set reqIdx [lsearch $args -req]
+	set reqIdx [lsearch $args -req]
         if {$reqIdx > -1} {
 	       incr reqIdx
 	       set req [lindex $args $reqIdx]
@@ -275,12 +275,14 @@ namespace eval ::request {
                     dict set params -type $v
                 }
                 -headers {
-                    foreach it $v {
-                        dict set headers [lindex $it 0] [lindex $it 1]
+                    foreach {k v} $v {
+                        dict set headers $k $v
                     }
                 }
                 -header {
-                    dict set headers [lindex $v 0] [lindex $v 1]
+                    foreach {k v} $v {
+                        dict set headers $k $v
+                    }
                 }
             }
         }
