@@ -194,19 +194,19 @@ namespace eval ::request {
     }
 
     proc post {url payload {headers ""} {args ""}} {
-        do-request -url $url -method POST -data $payload -headers $headers {*}$args
+        do-request -url $url -method POST -body $payload -headers $headers {*}$args
     }
 
     proc put {url payload {headers ""} {args ""}} {
-        do-request -url $url -method PUT -data $payload -headers $headers {*}$args
+        do-request -url $url -method PUT -body $payload -headers $headers {*}$args
     }
 
     proc patch {url payload {headers ""} {args ""}} {
-        do-request -url $url -method PATCH -data $payload -headers $headers {*}$args
+        do-request -url $url -method PATCH -body $payload -headers $headers {*}$args
     }
 
     proc delete {url payload {headers ""} {args ""}} {
-        do-request -url $url -method DELETE -data $payload -headers $headers {*}$args
+        do-request -url $url -method DELETE -body $payload -headers $headers {*}$args
     }
 
     # @param cmd <get|head|options|post|put|delete|patch>
