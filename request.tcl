@@ -301,7 +301,6 @@ namespace eval ::request {
             foreach {k v} $params {                
                 ${log}::debug "param: $k=$v"
             }
-	    ${log}::debug "body = $data"
 	}
 
         set token [::http::geturl $url {*}$params ]
