@@ -146,7 +146,7 @@ namespace eval ::request {
                 } else {
                     ${::request::log}::error "use prop <name> or prop <name> <value>"
                 }
-	        }
+	    }
 
 
             method url {url} {
@@ -193,19 +193,19 @@ namespace eval ::request {
         do-request -url $url -method HEAD -headers $headers {*}$args
     }
 
-    proc post {url payload {headers ""} {args ""}} {
+    proc post {url {payload ""} {headers ""} {args ""}} {
         do-request -url $url -method POST -body $payload -headers $headers {*}$args
     }
 
-    proc put {url payload {headers ""} {args ""}} {
+    proc put {url {payload ""} {headers ""} {args ""}} {
         do-request -url $url -method PUT -body $payload -headers $headers {*}$args
     }
 
-    proc patch {url payload {headers ""} {args ""}} {
+    proc patch {url {payload ""} {headers ""} {args ""}} {
         do-request -url $url -method PATCH -body $payload -headers $headers {*}$args
     }
 
-    proc delete {url payload {headers ""} {args ""}} {
+    proc delete {url {payload} {headers ""} {args ""}} {
         do-request -url $url -method DELETE -body $payload -headers $headers {*}$args
     }
 
@@ -259,13 +259,13 @@ namespace eval ::request {
                     set url $v
                 }
                 -method {
-                    dict set params -method $v
+                    dict set params -method [string toupper $v]
                 }
                 -body {
                     set query $v
                 }
                 -json {
-                    set query $v
+                    set query $v                    
                     dict set params -type application/json
                 }
                 -timeout {

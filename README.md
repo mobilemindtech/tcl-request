@@ -93,7 +93,7 @@ Gereral args
 * `-timeout` timeout milliseconds
 * `-content-type` set content-type
 * `-header` keyval `{k v}`
-* `-headers` keyvallist `{{k v} {x y}}`
+* `-headers` keyvallist `{k v x y}`
 * `-req` accepts a `::request::Request`
 * `--` send args directly to `::http::geturl`
 

@@ -17,7 +17,7 @@ test test-get {} -body {
     
     set resp [request get \
                 http://echo.jsontest.com/key/value/one/two \
-                {{Content-Type application/json}} \
+                {Content-Type application/json} \
                 -debug true]
 
     assert {[$resp json] == {one two key value}}
