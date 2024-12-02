@@ -181,31 +181,31 @@ namespace eval ::request {
         }    
     }
 
-    proc get {url {headers {}} {args ""}} {
+    proc get {url {headers ""} {args ""}} {
         do-request -url $url -method GET -headers $headers {*}$args
     }
 
-    proc options {url {headers {}} {args ""}} {
+    proc options {url {headers ""} {args ""}} {
         do-request -url $url -method OPTIONS -headers $headers {*}$args
     }
 
-    proc head {url {headers {}} {args ""}} {
+    proc head {url {headers ""} {args ""}} {
         do-request -url $url -method HEAD -headers $headers {*}$args
     }
 
-    proc post {url payload {{headers}} {args ""}} {
+    proc post {url payload {headers ""} {args ""}} {
         do-request -url $url -method POST -data $payload -headers $headers {*}$args
     }
 
-    proc put {url payload {{headers}} {args ""}} {
+    proc put {url payload {headers ""} {args ""}} {
         do-request -url $url -method PUT -data $payload -headers $headers {*}$args
     }
 
-    proc patch {url payload {{headers}} {args ""}} {
+    proc patch {url payload {headers ""} {args ""}} {
         do-request -url $url -method PATCH -data $payload -headers $headers {*}$args
     }
 
-    proc delete {url payload {{headers}} {args ""}} {
+    proc delete {url payload {headers ""} {args ""}} {
         do-request -url $url -method DELETE -data $payload -headers $headers {*}$args
     }
 
