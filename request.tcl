@@ -234,7 +234,7 @@ namespace eval ::request {
         set headers {}
         set params {}
         set url {}
-        set data {}
+        set query {}
         set debug false
         set req {}
 
@@ -262,10 +262,10 @@ namespace eval ::request {
                     dict set params -method $v
                 }
                 -body {
-                    set data $v
+                    set query $v
                 }
                 -json {
-                    set data $v
+                    set query $v
                     dict set params -type application/json
                 }
                 -timeout {
@@ -293,6 +293,7 @@ namespace eval ::request {
             }
         }
 
+	dict set params -query $query
         dict set params -headers $headers
 
         if {$debug} {
@@ -300,7 +301,8 @@ namespace eval ::request {
             foreach {k v} $params {                
                 ${log}::debug "param: $k=$v"
             }
-        }
+	    ${log}::debug "body = $data"
+	}
 
         set token [::http::geturl $url {*}$params ]
         set resp [Response new $token]
