@@ -1,5 +1,10 @@
 package provide request 1.0
 
+set dir [file dirname [file normalize [info script]]]
+
+source [file join $dir request.tcl]
+source [file join $dir response.tcl]
+
 package require http
 package require tls
 package require TclOO
