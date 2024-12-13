@@ -11,34 +11,11 @@ https://www.tcl.tk/man/tcl8.6.13/TclCmd/http.htm
 Ref https://github.com/mobilemindtech/tclp
 
 ```
-tclp pkg install https://github.com/mobilemindtech/tcl-request request
+tclp pkg install https://github.com/mobilemindtech/tcl-request
 ```
 
 
 ## Usage
-
-Import all:
-`quote-string config url-encode new-request get post put patch delete options do-request request Request Response`
-
-```tcl
-package require request
-namespace import ::request::all::* 
-
-set resp [get http://myapp.com/json]
-
-# convert to tcl dict
-puts [$resp json]
-
-# warn! use third json lib to converter tcl to json
-set resp [post http://myapp.com/json -json {{"x": 1, "y": 2}}]
-
-puts [$resp status]
-
-get http://app.com -- -header {x y} 
-```
-
-Import only:
-`request new-request url-encode quote-string config Request Response`
 
 ```tcl
 package require request
@@ -49,7 +26,9 @@ $req url http://myapp.com
 set resp [request do -req $req]
 
 # use http with cmd
-request get http://app.com -- -header {x y} 
+request get http://app.com -- -header {x y}
+
+request post http://app.com {x=1}
 
 ```
 
@@ -58,29 +37,19 @@ Use `--` to pass values to `http::geturl`
 
 ### Doc
 
-* `::request::all::get {url {headers keyvallist} args}` 
-* `::request::all::options {url {headers keyvallist} args}`
-* `::request::all::post {url payload {headers keyvallist} args}`
-* `::request::all::put {url payload {headers keyvallist} args}`
-* `::request::all::patch {url payload {headers keyvallist} args}`
-* `::request::all::delete {url payload {headers keyvallist} args}`
-* `::request::all::do-request {args}`
 
-* `::request::new-request` Create new `::request::Request`
+* `::request::new-request {args}` Create new `::request::Request`
 * `::request::url-encode {keyvallist}`  wrapper for `::http::formatQuery`
 * `::request::quote-string {string}`  wrapper for `::http::quoteString`
 * `::request::config {args}` wrapper for `::http::config`
 
-Requests cmd
-
-* `::request::request {cmd args}`
-* `::request::request do {args}` same of `request`
 * `::request::request get {url {headers keyvallist} args}` 
 * `::request::request options {url {headers keyvallist} args}`
 * `::request::request post {url payload {headers keyvallist} args}`
 * `::request::request put {url payload {headers keyvallist} args}`
 * `::request::request patch {url payload {headers keyvallist} args}`
 * `::request::request delete {url payload {headers keyvallist} args}`
+* `::request::request {args}`
 
 Gereral args
 

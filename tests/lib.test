@@ -3,6 +3,8 @@ package require tcltest
 namespace import ::tcltest::*
 
 source ../request.tcl
+source ../response.tcl
+source ../lib.tcl
 
 namespace import ::request::*
 
@@ -32,7 +34,7 @@ test test-get-req {} -body {
 
     set req [Request new -url http://echo.jsontest.com/x/1/y/2 -method get]
 
-    set resp [request do -req $req -debug true]
+    set resp [request -req $req -debug true]
 
     assert {[$resp json] == {x 1 y 2}}
     assert {[$resp content-type] == "application/json"}
