@@ -1,7 +1,7 @@
 
 package tools
 
-namespace import ::tools::props
+namespace import ::tools::Props
 
 namespace eval ::request {
 

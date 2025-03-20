@@ -3,7 +3,7 @@
 package json
 package tools
 
-namespace import ::tools:props
+namespace import ::tools:Props
 
 namespace eval request {
     oo::class create Response {
