@@ -1,7 +1,7 @@
 
 
-package json
-package tools
+package require json
+package require tools
 
 namespace import ::tools:props
 
