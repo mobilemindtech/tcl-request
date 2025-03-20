@@ -2,8 +2,6 @@ package require tcltest
 
 namespace import ::tcltest::*
 
-source ../request.tcl
-source ../response.tcl
 source ../lib.tcl
 
 namespace import ::request::*

@@ -1,9 +1,8 @@
 package provide request 1.0
 
-set dir [file dirname [file normalize [info script]]]
 
-source [file join $dir request.tcl]
-source [file join $dir response.tcl]
+source [file join [file dirname [file normalize [info script]]] request.tcl]
+source [file join [file dirname [file normalize [info script]]] response.tcl]
 
 package require http
 package require tls
@@ -11,8 +10,6 @@ package require TclOO
 package require logger
 package require json
 package require tools
-
-namespace import ::tools::props
 
 ::http::register https 443 [list ::tls::socket -autoservername true]
 
@@ -23,8 +20,6 @@ namespace eval ::request {
 
 
     set log [logger::init request]
-
-
 
 
     proc get {url {headers ""} {args ""}} {
