@@ -30,6 +30,13 @@ request get http://app.com -- -header {x y}
 
 request post http://app.com {x=1}
 
+# file dowload
+
+set fd [open my_file.jpg w+]
+set page [quote-string "my file name.jpg"]
+set url "https://site.com/images/$page"
+request get $url -- -channel $fd -binary 1
+
 ```
 
 Use `--` to pass values to `http::geturl`
