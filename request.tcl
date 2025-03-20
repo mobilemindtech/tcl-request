@@ -1,5 +1,5 @@
 
-package tools
+package require tools
 
 namespace import ::tools::props
 
